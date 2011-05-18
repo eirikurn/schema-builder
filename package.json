@@ -1,0 +1,10 @@
+{
+    "name": "schema-builder"
+  , "version": "0.0.1"
+  , "description": "A fluent api to create json schemas."
+  , "keywords": []
+  , "author": "Eirikur Nilsson <eirikur@nilsson.is>"
+  , "dependencies": {}
+  , "main": "index"
+  , "engines": { "node": "0.4.x" }
+}
