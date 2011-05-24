@@ -26,6 +26,13 @@ module.exports = {
     });
   },
 
+  'combining helpers': function() {
+    var b = builder;
+    var s = b(function() { return email(required()); });
+    s.should.have.property('required', true);
+    s.should.have.property('pattern');
+  },
+
   'persists globals': function() {
     global.array = 5;
     delete global.object;
@@ -45,10 +52,25 @@ module.exports = {
     should.equal(global.string, null);
   },
 
-  'combining helpers': function() {
-    var b = builder;
-    var s = b(function() { return email(required()); });
-    s.should.have.property('required', true);
-    s.should.have.property('pattern');
+  'do not modify helpers': function() {
+    builder(function() { return string() });
+    builder.helpers.string.should.be.a('object');
+  },
+
+  'do reload changed helpers': function() {
+    assert.deepEqual(
+      builder(function() { return string() }),
+      { 'type': 'string' }
+    );
+
+    old = builder.helpers.string;
+    builder.helpers.string = { type: "string", required: true }
+
+    assert.deepEqual(
+      builder(function() { return string() }),
+      { type: 'string', required: true }
+    );
+
+    builder.helpers.string = old;
   },
 };
