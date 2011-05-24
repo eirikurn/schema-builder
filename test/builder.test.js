@@ -26,9 +26,29 @@ module.exports = {
     });
   },
 
-  'persist globals': function() {
+  'persists globals': function() {
+    global.array = 5;
+    delete global.object;
+    global.string = null;
 
+    var schema = builder(function() {
+      return object({
+        properties: {
+          a: string(),
+          b: array()
+        }
+      });
+    });
 
+    global.array.should.equal(5);
+    global.should.not.have.property('object');
+    should.equal(global.string, null);
   },
 
+  'combining helpers': function() {
+    var b = builder;
+    var s = b(function() { return email(required()); });
+    s.should.have.property('required', true);
+    s.should.have.property('pattern');
+  },
 };
